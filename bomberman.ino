@@ -94,11 +94,11 @@ struct HighScore {
 };
 
 HighScore highscores[HIGHSCORE_COUNT] = {
-  {999, "AAA"},
-  {999, "AAA"},
-  {999, "AAA"},
-  {999, "AAA"},
-  {999, "AAA"}
+  {200, "AAA"},
+  {200, "AAA"},
+  {200, "AAA"},
+  {200, "AAA"},
+  {200, "AAA"}
 };
 
 const byte dinPin = 12;
@@ -299,6 +299,15 @@ void loop() {
     stopGame();
     currentScore = elapsedTimeInSeconds;
     elapsedTimeInSeconds = 0;
+    if (currentScore == 200){
+      lcd.clear();
+      displayX();
+      centerTextOnLcd(F("Game over!"), 0);
+      delay(3000);
+      gameFinished = false;
+      gameInProgress = false;
+      lives = 3;
+    }
   } 
 }
 
@@ -764,12 +773,12 @@ void chooseName() {
 }
 
 // the highscores are displayed with the place score and name
-// if the score is 999 (the initial one) it is shown 0 without the name so it shows there are no games played
+// if the score is 200 (the initial one) it is shown 0 without the name so it shows there are no games played
 void displayHighScores() {
   for (int i = 0; i < HIGHSCORE_COUNT; ++i) {
     lcd.clear();
     centerTextOnLcd(F("Highscores:"), 0);
-    if(highscores[i].score == 999){
+    if(highscores[i].score == 200){
       centerTextOnLcd(String(i + 1) + String(". ") + String(0),1);
     }else{
       centerTextOnLcd(String(i + 1) + String(". ") + String(highscores[i].score) + String(" - ") + String(highscores[i].playerName), i + 1);
@@ -817,11 +826,11 @@ void manageHighScores() {
   }
 }
 
-// to reset highscores we change what is saved on the EEPROM with the initial values: 999 for score and "AAA" for playerName
+// to reset highscores we change what is saved on the EEPROM with the initial values: 200 for score and "AAA" for playerName
 // we do that because to be a highscore it should be a score smaller than what is saved and by giving such a high value it will always be smaller and "AAA" is the initial playerName
 void resetHighscores() {
   for (int i = 0; i < HIGHSCORE_COUNT; ++i) {
-    highscores[i].score = 999;
+    highscores[i].score = 200;
     strncpy(highscores[i].playerName, "AAA", sizeof("AAA"));
     EEPROM.update((4 + i) * sizeof(HighScore), highscores[i].score);
 
@@ -1287,6 +1296,9 @@ void stopGame(){
   if (millis() - lastDebounceTimeButton > debounceDelayButton){
     if (buttonState == LOW && !lastButtonState) {
         gameInProgress = false;
+        lcd.clear();
+        gameFinished = false;
+        lives = 3;
       }
   }
 
@@ -1303,15 +1315,10 @@ void menuMovingSound(){
 void themeSong(){
 
   for (int thisNote = 0; thisNote < 8; thisNote++) {
-
     int noteDuration = 1000 / noteDurations[thisNote];
-
     tone(buzzerPin, melody[thisNote], noteDuration);
-
     int pauseBetweenNotes = noteDuration * 1.30;
-
     delay(pauseBetweenNotes);
-
   }
 }
 
