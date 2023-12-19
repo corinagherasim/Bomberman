@@ -145,9 +145,6 @@ There is a player that should go from the top left corner to the bottom right co
 
 <li> Reset highscores
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/a00df866-4b25-4451-b26a-938da5f5da29" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/37590fde-60c6-41aa-b623-b15915ee3f6c" width="49%" height="500">
 </p>
-
-
-
