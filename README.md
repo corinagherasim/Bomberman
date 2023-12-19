@@ -1,6 +1,6 @@
 # Bomberman
 This is the Introduction to Robotics matrix project, taken in the 3rd year at the Faculty of Mathematics and Computer Science, University of Bucharest. It involves making a game on a 8x8 matrix of LEDs and an LCD screen using a joystick.
-I chose Bomberman because i think it is a game that suits the tasks perfectly. Before making it i played online to understand the game better and to make the functionalities as close as the original.
+I chose Bomberman because i think it is a game that suits the tasks perfectly. Before making it, I played online to understand the game better and to make the functionalities as close as the original.
 
 ### Youtube link presenting the project: <a href= "https://youtu.be/mV54f1vsJz8?si=SKThWqmz0ILGHrO_"> Click here </a>
 
