@@ -77,26 +77,29 @@ There is a player that should go from the top left corner to the bottom right co
 <ul>
 <li> Intro message
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/e4f2d8a6-e400-40de-bb4e-531b8283ecc0" width="49%" height="500">
 </p>
 
 <li> Game
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/a9fb5483-6229-4296-ad74-83ef83023ccd" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/99b10065-f6fc-4a37-9f4d-de98e0a34303" width="49%" height="500">
+</p>
+<p float = "left">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/64481d1a-c25b-4371-a67f-671e7bfb2762" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/1d347a59-275b-485b-9df7-d81f897225aa" width="49%" height="500">
 </p>
 
 <li> Highscores
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/bd04b22b-6a5b-46aa-a57f-0f5cbb17f229" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/b239dd7b-1d43-469c-bb6a-379aa8a15b7b" width="49%" height="500">
 </p>
 
 <li> How to play
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/7faa6a72-c146-4ef8-b9e1-ff771c2aa17f" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/d1a58ae9-d782-49a9-b799-ae0a11d278f1" width="49%" height="500">
 </p>
 
 <li> About
