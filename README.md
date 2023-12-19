@@ -104,32 +104,32 @@ There is a player that should go from the top left corner to the bottom right co
 
 <li> About
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/50c50ec6-064c-468d-9188-f150283fe0c0" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/ff1a34d1-fcb3-4662-a4ca-fc75c6a0d0de" width="49%" height="500">
 </p>
 
 <li> Choose name
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/025ef800-2a8f-4696-89fd-ec94b5d50fd5" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/fa8ca66d-4ae2-4024-be7c-024d003a91e4" width="49%" height="500">
 </p>
 
 <li> Brightness LCD
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/0929cb87-be64-42cd-90cb-9066c4c901da" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/12a26c45-49f9-4571-a8e1-022689335f4b" width="49%" height="500">
 </p>
 
 <li> Brightness Matrix
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/149494d3-9dd6-4e15-b575-8202ae82cb3a" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/2d949d0b-c182-4a56-8d89-b566b88dfc17" width="49%" height="500">
 </p>
 
 <li> Sound ON/OFF
 <p float = "left">
-<image src = "" width="49%" height="500">
-<image src = "" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/23cb0602-941d-4ef3-a4ed-577ad0878a16" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/e37be261-615d-4b9a-85e7-29869525d246" width="49%" height="500">
 </p>
 
 <li> Reset highscores
@@ -137,4 +137,3 @@ There is a player that should go from the top left corner to the bottom right co
 <image src = "" width="49%" height="500">
 <image src = "" width="49%" height="500">
 </p>
-</ul>
