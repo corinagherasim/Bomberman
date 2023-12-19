@@ -73,6 +73,17 @@ menu should only be closed by the player, pressing a button.
 ### Description of the game:
 There is a player that should go from the top left corner to the bottom right corner, then a new map is generated. To achieve that the player should destroy the walls by putting bombs next to them. The bomb destroys one wall from each side (up, down, left, right). When a bomb is planted the player has 3 seconds to move from next to it or the game restarts and a new map is generated. There is a led that warns the player that he is next to the bomb. To win the game the player should complete the map 2 times. It has 3 lives in the beggining which are shown on the LCD display and every time the player plants a bomb and doesn't move dies, loses a life, a new map is generated and the game goes from the beggining (even though the player completed the map one time it doesn't count anymore).
 
+### How to play
+<ul>
+  <li> Move player with joystick
+  <li> Plant bombs by pressing the joystick
+  <li> The bomb destroys one wall each direction (up, down, right, left)
+  <li> The bomb kills the player if the led is on
+  <li> There are 3 lives
+  <li> To win or to level up go to top left corner 
+  <li> To exit the game press the button
+</ul>
+
 ### Photos of functionalities:
 <ul>
 <li> Intro message
