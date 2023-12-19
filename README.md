@@ -104,14 +104,14 @@ There is a player that should go from the top left corner to the bottom right co
 
 <li> About
 <p float = "left">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/50c50ec6-064c-468d-9188-f150283fe0c0" width="49%" height="500">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/ff1a34d1-fcb3-4662-a4ca-fc75c6a0d0de" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/454edd92-bcc8-4304-8072-3aeb543cdade" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/32bfde9d-9853-4841-86d0-68c7b72078ba" width="49%" height="500">
 </p>
 
 <li> Choose name
 <p float = "left">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/025ef800-2a8f-4696-89fd-ec94b5d50fd5" width="49%" height="500">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/fa8ca66d-4ae2-4024-be7c-024d003a91e4" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/0ef34aa8-d6ab-41e5-9402-49b69d0c98d7" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/e821cb5d-b056-45de-9b71-d3916da6e06a" width="49%" height="500">
 </p>
 
 <li> Brightness LCD
@@ -137,3 +137,6 @@ There is a player that should go from the top left corner to the bottom right co
 <image src = "" width="49%" height="500">
 <image src = "" width="49%" height="500">
 </p>
+
+
+
