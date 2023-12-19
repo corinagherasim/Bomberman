@@ -2,6 +2,8 @@
 This is the Introduction to Robotics matrix project, taken in the 3rd year at the Faculty of Mathematics and Computer Science, University of Bucharest. It involves making a game on a 8x8 matrix of LEDs and an LCD screen using a joystick.
 I chose Bomberman because i think it is a game that suits the tasks perfectly. Before making it i played online to understand the game better and to make the functionalities as close as the original.
 
+### Youtube link presenting the homework: <a href= ""> Click here </a>
+
 ### Components Used:
 
 * 1x 8x8 LED Matrix
@@ -67,3 +69,67 @@ upon interaction (button press) or after a few moments.
 <li> Screen 2: display relevant game info: score, time, lives left etc.
 Must inform player if he/she beat the highscore. This
 menu should only be closed by the player, pressing a button.
+
+### Description of the game:
+There is a player that should go from the top left corner to the bottom right corner, then a new map is generated. To achieve that the player should destroy the walls by putting bombs next to them. The bomb destroys one wall from each side (up, down, left, right). When a bomb is planted the player has 3 seconds to move from next to it or the game restarts and a new map is generated. There is a led that warns the player that he is next to the bomb. To win the game the player should complete the map 2 times. It has 3 lives in the beggining which are shown on the LCD display and every time the player plants a bomb and doesn't move dies, loses a life, a new map is generated and the game goes from the beggining (even though the player completed the map one time it doesn't count anymore).
+
+### Photos of functionalities:
+<li> Intro message
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Game
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Highscores
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> How to play
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> About
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Choose name
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Brightness LCD
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Brightness Matrix
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Sound ON/OFF
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
+
+<li> Reset highscores
+<p float = "left">
+<image src = "" width="49%" height="500">
+<image src = "" width="49%" height="500">
+</p>
