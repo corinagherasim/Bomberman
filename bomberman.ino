@@ -455,9 +455,11 @@ void checkButtonPress() {
           
         case SETTINGS:
           Serial.println("Button pressed in SETTINGS state");
+          lcd.clear();
+          centerTextOnLcd(F("Loading"), 0);
+          centerTextOnLcd(F("settings..."), 1);
+          delay(2000);
           set = 1;
-          joystickMoveMenuSettings();
-          checkButtonPressSettings();
           break;
 
         case HOW_TO_PLAY:
