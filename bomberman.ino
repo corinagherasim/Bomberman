@@ -1114,7 +1114,11 @@ void joystickMoveMatrix() {
       lcd.clear();
       centerTextOnLcd(String("Congrats, ") + String(playerName), 0);
       centerTextOnLcd(String("Score: ") + String(currentScore), 1);
-      delay(3000);
+      if(soundOnOrOff == true){
+      themeSong();
+      } else{
+        delay(3000);
+      }
       gameFinished = true;
       manageHighScores();
       if (highscoreMess == 1){
@@ -1220,10 +1224,10 @@ void bomb() {
         (playerRow == bombRow && playerCol == bombCol + 1)
          ) {
         // restart game if the player has lives left
-        generateRandomMap();
-        resetPlayer();
         n = 0;
         lives-=1;
+        generateRandomMap();
+        resetPlayer();
         digitalWrite(ledPin, LOW);
         // stops the game if the player has no more lives
         if(lives == 0){
