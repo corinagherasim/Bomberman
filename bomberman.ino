@@ -1,7 +1,10 @@
 #include "LedControl.h"
+
 #include <LiquidCrystal.h>
+
 #include <EEPROM.h>
-#include "pitches.h" 
+
+#include "pitches.h"
 
 
 const byte rs = 9;
@@ -34,7 +37,7 @@ const int maxThresholdCenter = 700;
 const int minThresholdMargin = 200;
 const int maxThresholdMargin = 900;
 
-const int ledPin = A2; 
+const int ledPin = A2;
 const int buzzerPin = 13;
 const int buttonPin = A3;
 
@@ -84,7 +87,34 @@ unsigned long gameStartTime = 0;
 const int HIGHSCORE_COUNT = 5;
 
 char playerName[4] = "AAA";
-const char alphabet[27] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+const char alphabet[27] = {
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'I',
+  'J',
+  'K',
+  'L',
+  'M',
+  'N',
+  'O',
+  'P',
+  'Q',
+  'R',
+  'S',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z'
+};
 
 unsigned long currentScore;
 
@@ -94,11 +124,26 @@ struct HighScore {
 };
 
 HighScore highscores[HIGHSCORE_COUNT] = {
-  {200, "AAA"},
-  {200, "AAA"},
-  {200, "AAA"},
-  {200, "AAA"},
-  {200, "AAA"}
+  {
+    200,
+    "AAA"
+  },
+  {
+    200,
+    "AAA"
+  },
+  {
+    200,
+    "AAA"
+  },
+  {
+    200,
+    "AAA"
+  },
+  {
+    200,
+    "AAA"
+  }
 };
 
 const byte dinPin = 12;
@@ -110,30 +155,54 @@ LedControl lc = LedControl(dinPin, clockPin, loadPin, 1);
 
 bool walls[matrixSize][matrixSize];
 
-const int lcdBrightnessAddr = 0;        // EEPROM address for storing LCD brightness
-const int matrixBrightnessAddr = 1;     // EEPROM address for storing matrix brightness
-const int soundStateAddr = 2;           // EEPROM address for storing if the sound is on or off
-const int playerNameAddr = 15;          // EEPROM address for storing the name of the player
-
+const int lcdBrightnessAddr = 0; // EEPROM address for storing LCD brightness
+const int matrixBrightnessAddr = 1; // EEPROM address for storing matrix brightness
+const int soundStateAddr = 2; // EEPROM address for storing if the sound is on or off
+const int playerNameAddr = 15; // EEPROM address for storing the name of the player
 
 //inspired by surdubob Github
 enum menuStates {
-  START_GAME, HIGHSCORES, SETTINGS, ABOUT, HOW_TO_PLAY
-} menuState;
+  START_GAME,
+  HIGHSCORES,
+  SETTINGS,
+  ABOUT,
+  HOW_TO_PLAY
+}
+menuState;
 
 enum menuStatesSettings {
-  NAME, LCD, MATRIX, SOUND, RESET_HIGHSCORES, BACK
-} menuStateSettings;
+  NAME,
+  LCD,
+  MATRIX,
+  SOUND,
+  RESET_HIGHSCORES,
+  BACK
+}
+menuStateSettings;
 
 // theme song
 int melody[] = {
 
-  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+  NOTE_C4,
+  NOTE_G3,
+  NOTE_G3,
+  NOTE_A3,
+  NOTE_G3,
+  0,
+  NOTE_B3,
+  NOTE_C4
 };
 
 int noteDurations[] = {
 
-  4, 8, 8, 4, 4, 4, 4, 4
+  4,
+  8,
+  8,
+  4,
+  4,
+  4,
+  4,
+  4
 };
 
 // drawings on LCD
@@ -222,32 +291,31 @@ void setup() {
   pinMode(buzzerPin, OUTPUT);
   analogWrite(v0, 100);
   lcd.begin(16, 2);
-  
-  lc.shutdown(0,false);
+
+  lc.shutdown(0, false);
   lc.setIntensity(0, 8);
 
-  lcd.createChar(0, heart);//used for lives
-  lcd.createChar(1, arrowRight);//used for menu
-  lcd.createChar(2, arrowLeft);//used for menu
-  lcd.createChar(3, arrowUp);//used for menu
-  lcd.createChar(4, arrowDown);//used for menu
-  lcd.createChar(5, soundOn);//used for changing sound
-  lcd.createChar(6, soundOff);//used for changing sound
-
+  lcd.createChar(0, heart); //used for lives
+  lcd.createChar(1, arrowRight); //used for menu
+  lcd.createChar(2, arrowLeft); //used for menu
+  lcd.createChar(3, arrowUp); //used for menu
+  lcd.createChar(4, arrowDown); //used for menu
+  lcd.createChar(5, soundOn); //used for changing sound
+  lcd.createChar(6, soundOff); //used for changing sound
 
   // reading the values saved in EEPROM and showing them
   lcdBrightness = EEPROM.read(lcdBrightnessAddr);
   analogWrite(v0, lcdBrightness);
-  
+
   matrixBrightness = EEPROM.read(matrixBrightnessAddr);
   lc.setIntensity(0, matrixBrightness);
-  
+
   soundOnOrOff = EEPROM.read(soundStateAddr);
 
   for (int k = 0; k < 3; ++k) {
     playerName[k] = EEPROM.read(playerNameAddr + k);
   }
-  
+
   for (int i = 0; i < HIGHSCORE_COUNT; ++i) {
     highscores[i].score = EEPROM.read((4 + i) * sizeof(HighScore));
     for (int j = 0; j < sizeof(highscores[i].playerName); ++j) {
@@ -257,17 +325,17 @@ void setup() {
 
   centerTextOnLcd(F("Welcome to"), 0);
   centerTextOnLcd(F("Bomberman"), 1);
-  if(soundOnOrOff == true){
-  themeSong();
-  } else{
+  if (soundOnOrOff == true) {
+    themeSong();
+  } else {
     delay(3000);
   }
-  
+
   lcd.clear();
-  
+
   menuState = START_GAME;
   menuStateSettings = NAME;
-  
+
 }
 
 void loop() {
@@ -275,11 +343,10 @@ void loop() {
   //if the game is not in progress it shows the menu but if it is it uses the functions for the game and it shows on the lcd the lives i have left to play (maximum 3 and when at 0 the game stops)
   if (!gameInProgress) {
     // set checks in what menu we are if set = 1 we are in the settings menu and controls that
-    if(set == 1){
+    if (set == 1) {
       joystickMoveMenuSettings();
       checkButtonPressSettings();
-    }
-    else{
+    } else {
       joystickMoveMenu();
       checkButtonPress();
     }
@@ -289,9 +356,9 @@ void loop() {
     unsigned long currentTime = millis();
     unsigned long elapsedTimeInSeconds = (currentTime - gameStartTime) / 1000;
     centerTextOnLcd(String("Score: ") + String(elapsedTimeInSeconds), 0);
-    for (int i = 0; i<lives; i++){
+    for (int i = 0; i < lives; i++) {
       lcd.setCursor(startColumn + i, 1);
-      lcd.write((byte)0);
+      lcd.write((byte) 0);
     }
     delay(100);
     joystickMoveMatrix();
@@ -299,7 +366,7 @@ void loop() {
     stopGame();
     currentScore = elapsedTimeInSeconds;
     elapsedTimeInSeconds = 0;
-    if (currentScore == 200){
+    if (currentScore == 200) {
       lcd.clear();
       displayX();
       centerTextOnLcd(F("Game over!"), 0);
@@ -308,7 +375,7 @@ void loop() {
       gameInProgress = false;
       lives = 3;
     }
-  } 
+  }
 }
 
 void readJoystickValues() {
@@ -319,109 +386,109 @@ void readJoystickValues() {
 
 // printing main menu depending on the menu state which can be changed with the joystick
 // the arrows are added depending the directions you can move to from the current position
-void mainMenu(int menuState){
+void mainMenu(int menuState) {
   lcd.clear();
-  switch(menuState){
-    case START_GAME:{
-      displayMaze();
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Start game"), 0, false, true);
-      break;
-    }
+  switch (menuState) {
+  case START_GAME: {
+    displayMaze();
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Start game"), 0, false, true);
+    break;
+  }
 
-    case HIGHSCORES:{
-      displayCup();
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Highscores"), 0, true, true);
-      break;
-    }
-    
-    case SETTINGS:{
-      displaySettingsLogo();
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Settings"), 0, true, true);
-      break;
-    }
+  case HIGHSCORES: {
+    displayCup();
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Leaderboard"), 0, true, true);
+    break;
+  }
 
-    case HOW_TO_PLAY:{
-      displayQuestionMark();
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("How to play"), 0, true, true);
-      break;
-    }
-    
-    case ABOUT:{
-      displayGithubLogo();
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("About"), 0, true, false);
-      break;
-    }
+  case SETTINGS: {
+    displaySettingsLogo();
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Settings"), 0, true, true);
+    break;
+  }
+
+  case HOW_TO_PLAY: {
+    displayQuestionMark();
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("How to play"), 0, true, true);
+    break;
+  }
+
+  case ABOUT: {
+    displayGithubLogo();
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("About"), 0, true, false);
+    break;
+  }
   }
 }
 
-void menuSettings(int menuStateSettings){
+void menuSettings(int menuStateSettings) {
   displaySettingsLogo();
   lcd.clear();
-  switch(menuStateSettings){
-    case NAME:{
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Choose name"), 1, false, true);
-      break;
-    }
+  switch (menuStateSettings) {
+  case NAME: {
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Choose name"), 1, false, true);
+    break;
+  }
 
-    case LCD:{
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Brightness"), 0, false, false);
-      centerTextOnLcdMenu(F("LCD"), 1, true, true);
-      break;
-    }
-    
-    case MATRIX:{
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Brightness"), 0, false, false);
-      centerTextOnLcdMenu(F("Matrix"), 1, true, true);
-      break;
-    }
-    
-    case SOUND:{
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Sound"), 0, false, false);
-      if (soundOnOrOff == false){
-        lcd.setCursor(5,1);
-        lcd.print("ON");  
-        lcd.write(byte(6));
-        lcd.print("OFF");
-        lcd.setCursor(0, 1);  
-        lcd.write(byte(2));
-        lcd.setCursor(lcdWidth - 1, 1);
-        lcd.write(byte(1));
-      }
-      if (soundOnOrOff == true){
-        lcd.setCursor(5,1);
-        lcd.print("ON");  
-        lcd.write(byte(5));
-        lcd.print("OFF");
-        lcd.setCursor(0, 1);  
-        lcd.write(byte(2));
-        lcd.setCursor(lcdWidth - 1, 1);
-        lcd.write(byte(1));
-      }
-      break;
-    }
-    
-    case RESET_HIGHSCORES:{
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Reset"), 0, false, false);
-      centerTextOnLcdMenu(F("Highscores"), 1, true, true);
-      break;
-    }
+  case LCD: {
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Contrast"), 0, false, false);
+    centerTextOnLcdMenu(F("LCD"), 1, true, true);
+    break;
+  }
 
-    case BACK:{
-      lcd.setCursor(1, 0);
-      centerTextOnLcdMenu(F("Back to"), 0, false, false);
-      centerTextOnLcdMenu(F("main menu"), 1, true, false);
-      break;
+  case MATRIX: {
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Brightness"), 0, false, false);
+    centerTextOnLcdMenu(F("Matrix"), 1, true, true);
+    break;
+  }
+
+  case SOUND: {
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Sound"), 0, false, false);
+    if (soundOnOrOff == false) {
+      lcd.setCursor(5, 1);
+      lcd.print("ON");
+      lcd.write(byte(6));
+      lcd.print("OFF");
+      lcd.setCursor(0, 1);
+      lcd.write(byte(2));
+      lcd.setCursor(lcdWidth - 1, 1);
+      lcd.write(byte(1));
     }
+    if (soundOnOrOff == true) {
+      lcd.setCursor(5, 1);
+      lcd.print("ON");
+      lcd.write(byte(5));
+      lcd.print("OFF");
+      lcd.setCursor(0, 1);
+      lcd.write(byte(2));
+      lcd.setCursor(lcdWidth - 1, 1);
+      lcd.write(byte(1));
+    }
+    break;
+  }
+
+  case RESET_HIGHSCORES: {
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Reset"), 0, false, false);
+    centerTextOnLcdMenu(F("Leaderboard"), 1, true, true);
+    break;
+  }
+
+  case BACK: {
+    lcd.setCursor(1, 0);
+    centerTextOnLcdMenu(F("Back to"), 0, false, false);
+    centerTextOnLcdMenu(F("main menu"), 1, true, false);
+    break;
+  }
   }
 }
 
@@ -433,74 +500,75 @@ void checkButtonPress() {
     if (swState == LOW && (millis() - lastDebounceTimeButton > debounceDelayButton)) {
       menuChoosingSound();
       switch (menuState) {
-        case START_GAME:
-          Serial.println("Button pressed in START_GAME state");
-          lcd.setCursor(1, 0);
-          lcd.write(byte(1));
-          centerTextOnLcd(F("Game starting..."), 0);
-          delay(2000);
-          gameInProgress = true;
-          gameStartTime = millis();
-          generateRandomMap();
-          resetPlayer();
-          readJoystickValues();
-          joystickMoveMatrix();
-          bomb();
-          break;
+      case START_GAME:
+        Serial.println("Button pressed in START_GAME state");
+        lcd.setCursor(1, 0);
+        lcd.write(byte(1));
+        centerTextOnLcd(F("Game starting..."), 0);
+        delay(2000);
+        gameInProgress = true;
+        gameStartTime = millis();
+        generateRandomMap();
+        resetPlayer();
+        readJoystickValues();
+        joystickMoveMatrix();
+        bomb();
+        break;
 
-        case HIGHSCORES:
-          Serial.println("Button pressed in HIGHSCORES state");
-          displayHighScores();
-          break;
-          
-        case SETTINGS:
-          Serial.println("Button pressed in SETTINGS state");
-          lcd.clear();
-          centerTextOnLcd(F("Loading"), 0);
-          centerTextOnLcd(F("settings..."), 1);
-          delay(2000);
-          set = 1;
-          break;
+      case HIGHSCORES:
+        Serial.println("Button pressed in HIGHSCORES state");
+        displayHighScores();
+        break;
 
-        case HOW_TO_PLAY:
-          Serial.println("Button pressed in HOW_TO_PLAY state");
-          lcd.clear();
-          centerTextOnLcd(F("Move player"), 0);
-          centerTextOnLcd(F("with joystick"), 1);
-          delay(2000);
-          lcd.clear();
-          centerTextOnLcd(F("To plant bombs"), 0);
-          centerTextOnLcd(F("press joystick"), 1);
-          delay(2000);
-          lcd.clear();
-          centerTextOnLcd(F("Bomb destroys up,"), 0);
-          centerTextOnLcd(F("down.left,right"), 1);
-          delay(2000);
-          lcd.clear();
-          centerTextOnLcd(F("Bomb kills you"), 0);
-          centerTextOnLcd(F("when led on"), 1);
-          delay(2000);
-          lcd.clear();
-          centerTextOnLcd(F("You have"), 0);
-          centerTextOnLcd(F("3 lives"), 1);
-          delay(2000);
-          lcd.clear();
-          centerTextOnLcd(F("Winning point"), 0);
-          centerTextOnLcd(F("top left corner"), 1);
-          delay(2000);
-          lcd.clear();
-          centerTextOnLcd(F("To win you do"), 0);
-          centerTextOnLcd(F("the map 2 times"), 1);
-          delay(2000);
-          break;
-          
-        case ABOUT:
-          Serial.println("Button pressed in ABOUT state");
-          lcd.setCursor(1, 0);
-          lcd.write(byte(1));      
-          displayScrollingText(F("Bomberman made by Corina Gherasim"), 0);
-          displayScrollingText(F("Github user: corinagherasim"), 0);
-          break;
+      case SETTINGS:
+        Serial.println("Button pressed in SETTINGS state");
+        lcd.clear();
+        centerTextOnLcd(F("Loading"), 0);
+        centerTextOnLcd(F("settings..."), 1);
+        delay(2000);
+        set = 1;
+        break;
+
+      case HOW_TO_PLAY:
+        Serial.println("Button pressed in HOW_TO_PLAY state");
+        lcd.clear();
+        centerTextOnLcd(F("Move player"), 0);
+        centerTextOnLcd(F("with joystick"), 1);
+        delay(2000);
+        lcd.clear();
+        centerTextOnLcd(F("To plant bombs"), 0);
+        centerTextOnLcd(F("press joystick"), 1);
+        delay(2000);
+        lcd.clear();
+        centerTextOnLcd(F("Bomb destroys up,"), 0);
+        centerTextOnLcd(F("down.left,right"), 1);
+        delay(2000);
+        lcd.clear();
+        centerTextOnLcd(F("Bomb kills you"), 0);
+        centerTextOnLcd(F("when led on"), 1);
+        delay(2000);
+        lcd.clear();
+        centerTextOnLcd(F("You have"), 0);
+        centerTextOnLcd(F("3 lives"), 1);
+        delay(2000);
+        lcd.clear();
+        centerTextOnLcd(F("Winning point"), 0);
+        centerTextOnLcd(F("top left corner"), 1);
+        delay(2000);
+        lcd.clear();
+        centerTextOnLcd(F("To win you do"), 0);
+        centerTextOnLcd(F("the map 2 times"), 1);
+        delay(2000);
+        break;
+
+      case ABOUT:
+        Serial.println("Button pressed in ABOUT state");
+        lcd.setCursor(1, 0);
+        displayScrollingText(F("Bomberman made by Corina Gherasim"), 0);
+        centerTextOnLcd(F("Github user:"), 0);
+        centerTextOnLcd(F("corinagherasim"), 1);
+        delay(2000);
+        break;
       }
       lastDebounceTimeButton = millis();
     }
@@ -513,42 +581,42 @@ void checkButtonPressSettings() {
     if (swState == LOW && (millis() - lastDebounceTimeButton > debounceDelayButton)) {
       menuChoosingSound();
       switch (menuStateSettings) {
-        case NAME:
-          Serial.println("Button pressed in NAME state");
-          chooseName();
-          break;
+      case NAME:
+        Serial.println("Button pressed in NAME state");
+        chooseName();
+        break;
 
-        case LCD:
-          Serial.println("Button pressed in LCD state");
-          adjustBrightnessLCD();
-          break;
-          
-        case MATRIX:
-          Serial.println("Button pressed in MATRIX state");
-          adjustBrightnessMatrix();
-          break;
-          
-        case SOUND:
-          Serial.println("Button pressed in SOUND state");
-          soundOnOrOff = !soundOnOrOff;
-          EEPROM.update(soundStateAddr, soundOnOrOff);
-          break;
+      case LCD:
+        Serial.println("Button pressed in LCD state");
+        adjustBrightnessLCD();
+        break;
 
-        case RESET_HIGHSCORES:
-          Serial.println("Button pressed in RESET_HIGHSCORES state");
-          lcd.clear();
-          resetHighscores();
-          centerTextOnLcd(F("Reseting"), 0);
-          centerTextOnLcd(F("highscores..."), 1);
-          delay(2000);
-          break;
-        
-        case BACK:
-          Serial.println("Button pressed in BACK state");
-          menuStateSettings = NAME;
-          menuState = SETTINGS;
-          set = 0;
-          break;
+      case MATRIX:
+        Serial.println("Button pressed in MATRIX state");
+        adjustBrightnessMatrix();
+        break;
+
+      case SOUND:
+        Serial.println("Button pressed in SOUND state");
+        soundOnOrOff = !soundOnOrOff;
+        EEPROM.update(soundStateAddr, soundOnOrOff);
+        break;
+
+      case RESET_HIGHSCORES:
+        Serial.println("Button pressed in RESET_HIGHSCORES state");
+        lcd.clear();
+        resetHighscores();
+        centerTextOnLcd(F("Reseting"), 0);
+        centerTextOnLcd(F("leaderboard..."), 1);
+        delay(2000);
+        break;
+
+      case BACK:
+        Serial.println("Button pressed in BACK state");
+        menuStateSettings = NAME;
+        menuState = SETTINGS;
+        set = 0;
+        break;
       }
       lastDebounceTimeButton = millis();
     }
@@ -564,43 +632,37 @@ void joystickMoveMenu() {
   }
 
   if (xValue > maxThresholdMargin && joystickMove) {
-    if(menuState == START_GAME){
+    if (menuState == START_GAME) {
       menuMovingSound();
       menuState = HIGHSCORES;
-    }
-    else if(menuState == HIGHSCORES){
+    } else if (menuState == HIGHSCORES) {
       menuMovingSound();
       menuState = SETTINGS;
-    }
-    else if(menuState == SETTINGS){
+    } else if (menuState == SETTINGS) {
       menuMovingSound();
       menuState = HOW_TO_PLAY;
-    }
-    else if(menuState == HOW_TO_PLAY){
+    } else if (menuState == HOW_TO_PLAY) {
       menuMovingSound();
       menuState = ABOUT;
     }
-    joystickMove = false;  
+    joystickMove = false;
   }
 
   if (xValue < minThresholdMargin && joystickMove) {
-    if(menuState == ABOUT){
+    if (menuState == ABOUT) {
       menuMovingSound();
       menuState = HOW_TO_PLAY;
-    }
-    else if(menuState == HOW_TO_PLAY){
+    } else if (menuState == HOW_TO_PLAY) {
       menuMovingSound();
       menuState = SETTINGS;
-    }
-    else if(menuState == SETTINGS){
+    } else if (menuState == SETTINGS) {
       menuMovingSound();
       menuState = HIGHSCORES;
-    }
-    else if(menuState == HIGHSCORES){
+    } else if (menuState == HIGHSCORES) {
       menuMovingSound();
       menuState = START_GAME;
     }
-    joystickMove = false;  
+    joystickMove = false;
   }
 
   mainMenu(menuState);
@@ -625,51 +687,43 @@ void joystickMoveMenuSettings() {
   }
 
   if (xValue > maxThresholdMargin && joystickMove) {
-    if(menuStateSettings == NAME){
+    if (menuStateSettings == NAME) {
       menuMovingSound();
       menuStateSettings = LCD;
-    }
-    else if(menuStateSettings == LCD){
+    } else if (menuStateSettings == LCD) {
       menuMovingSound();
       menuStateSettings = MATRIX;
-    }
-    else if(menuStateSettings == MATRIX){
+    } else if (menuStateSettings == MATRIX) {
       menuMovingSound();
       menuStateSettings = SOUND;
-    }
-    else if(menuStateSettings == SOUND){
+    } else if (menuStateSettings == SOUND) {
       menuMovingSound();
       menuStateSettings = RESET_HIGHSCORES;
-    }
-    else if(menuStateSettings == RESET_HIGHSCORES){
+    } else if (menuStateSettings == RESET_HIGHSCORES) {
       menuMovingSound();
       menuStateSettings = BACK;
     }
-    joystickMove = false;  
+    joystickMove = false;
   }
 
   if (xValue < minThresholdMargin && joystickMove) {
-    if(menuStateSettings == BACK){
+    if (menuStateSettings == BACK) {
       menuMovingSound();
       menuStateSettings = RESET_HIGHSCORES;
-    }
-    else if(menuStateSettings == RESET_HIGHSCORES){
+    } else if (menuStateSettings == RESET_HIGHSCORES) {
       menuMovingSound();
       menuStateSettings = SOUND;
-    }
-    else if(menuStateSettings == SOUND){
+    } else if (menuStateSettings == SOUND) {
       menuMovingSound();
       menuStateSettings = MATRIX;
-    }
-    else if(menuStateSettings == MATRIX){
+    } else if (menuStateSettings == MATRIX) {
       menuMovingSound();
       menuStateSettings = LCD;
-    }
-    else if(menuStateSettings == LCD){
+    } else if (menuStateSettings == LCD) {
       menuMovingSound();
       menuStateSettings = NAME;
     }
-    joystickMove = false;  
+    joystickMove = false;
   }
 
   menuSettings(menuStateSettings);
@@ -708,16 +762,14 @@ void chooseName() {
     lcd.print(' ');
     lcd.setCursor(6 + cursorPosition, 1);
     lcd.print('^');
-    lcd.setCursor(0, 1);  
+    lcd.setCursor(0, 1);
     lcd.write(byte(2));
     lcd.setCursor(lcdWidth - 1, 1);
     lcd.write(byte(1));
-    lcd.setCursor(0, 0);  
+    lcd.setCursor(0, 0);
     lcd.write(byte(3));
     lcd.setCursor(lcdWidth - 1, 0);
     lcd.write(byte(4));
-    
-    
 
     readJoystickValues();
 
@@ -779,10 +831,10 @@ void chooseName() {
 void displayHighScores() {
   for (int i = 0; i < HIGHSCORE_COUNT; ++i) {
     lcd.clear();
-    centerTextOnLcd(F("Highscores:"), 0);
-    if(highscores[i].score == 200){
-      centerTextOnLcd(String(i + 1) + String(". ") + String(0),1);
-    }else{
+    centerTextOnLcd(F("Leaderboard:"), 0);
+    if (highscores[i].score == 200) {
+      centerTextOnLcd(String(i + 1) + String(". ") + String(0), 1);
+    } else {
       centerTextOnLcd(String(i + 1) + String(". ") + String(highscores[i].score) + String(" - ") + String(highscores[i].playerName), i + 1);
     }
     delay(2000);
@@ -811,11 +863,11 @@ void manageHighScores() {
     // we are then updating the score and the name of the player in tempHighScore
     // we are then putting tempHighScore on the index position and then writing HighScore structures in EEPROM
     HighScore tempHighScore;
-    
+
     for (int i = HIGHSCORE_COUNT - 1; i > index; --i) {
       highscores[i] = highscores[i - 1];
     }
-    
+
     strncpy(tempHighScore.playerName, playerName, sizeof(playerName));
 
     tempHighScore.score = currentScore;
@@ -846,9 +898,9 @@ void resetHighscores() {
 // to change the levels you move the joystick up and down depending on the arrows that are shown
 // while changing the levels it is shown also on the LCD
 // after pressing the button the chosen value is saved on EEPROM
-void adjustBrightnessLCD(){
+void adjustBrightnessLCD() {
   lcd.clear();
-  centerTextOnLcd(F("Brightness"), 0);
+  centerTextOnLcd(F("Contrast"), 0);
   int lcdLevelBrightness;
   bool adjustmentCompleteLCD = false;
 
@@ -860,11 +912,11 @@ void adjustBrightnessLCD(){
     lcdLevelBrightness = 3;
   }
 
-  while(!adjustmentCompleteLCD){
+  while (!adjustmentCompleteLCD) {
     lcd.setCursor(0, 1);
     lcd.print(lcdLevelBrightness);
     readJoystickValues();
-    
+
     if (yValue < minThresholdMargin && lastYValue >= minThresholdMargin) {
       if (lcdLevelBrightness == 2) {
         lcdLevelBrightness = 1;
@@ -905,22 +957,22 @@ void adjustBrightnessLCD(){
     if (buttonState != lastButtonState) {
       lastDebounceTimeButton = millis();
     }
-  
-    if (millis() - lastDebounceTimeButton > debounceDelayButton){
+
+    if (millis() - lastDebounceTimeButton > debounceDelayButton) {
       if (buttonState == LOW && !lastButtonState) {
-          if (lcdLevelBrightness == 1) {
-            lcdBrightness = 75;
-          } else if (lcdLevelBrightness == 2) {
-            lcdBrightness = 100;
-          } else if (lcdLevelBrightness == 3) {
-            lcdBrightness = 125;
-          }
-          analogWrite(v0, lcdBrightness);
-          EEPROM.update(lcdBrightnessAddr, lcdBrightness);
-          adjustmentCompleteLCD = true;
+        if (lcdLevelBrightness == 1) {
+          lcdBrightness = 75;
+        } else if (lcdLevelBrightness == 2) {
+          lcdBrightness = 100;
+        } else if (lcdLevelBrightness == 3) {
+          lcdBrightness = 125;
+        }
+        analogWrite(v0, lcdBrightness);
+        EEPROM.update(lcdBrightnessAddr, lcdBrightness);
+        adjustmentCompleteLCD = true;
       }
     }
-  
+
     lastButtonState = buttonState;
     lastYValue = yValue;
   }
@@ -931,7 +983,7 @@ void adjustBrightnessLCD(){
 // to change the levels you move the joystick up and down depending on the arrows that are shown
 // while changing the levels it is shown also on the matrix
 // after pressing the button the chosen brightness is saved on EEPROM
-void adjustBrightnessMatrix(){
+void adjustBrightnessMatrix() {
   for (int row = 0; row < 8; row++) {
     for (int col = 0; col < 8; col++) {
       lc.setLed(0, row, col, HIGH);
@@ -942,24 +994,24 @@ void adjustBrightnessMatrix(){
   int matrixLevelBrightness;
   bool adjustmentCompleteMatrix = false;
 
-  if (matrixBrightness == 2){
+  if (matrixBrightness == 2) {
     matrixLevelBrightness = 1;
-  } else if (matrixBrightness == 6){
+  } else if (matrixBrightness == 6) {
     matrixLevelBrightness = 2;
-  } else if (matrixBrightness == 10){
+  } else if (matrixBrightness == 10) {
     matrixLevelBrightness = 3;
   }
 
-  while(!adjustmentCompleteMatrix){
+  while (!adjustmentCompleteMatrix) {
     lcd.setCursor(0, 1);
     lcd.print(matrixLevelBrightness);
     readJoystickValues();
-    
+
     if (yValue < minThresholdMargin && lastYValue >= minThresholdMargin) {
-      if (matrixLevelBrightness == 2){
+      if (matrixLevelBrightness == 2) {
         matrixLevelBrightness = 1;
         matrixBrightness = 2;
-      } else if (matrixLevelBrightness == 3){
+      } else if (matrixLevelBrightness == 3) {
         matrixLevelBrightness = 2;
         matrixBrightness = 6;
       }
@@ -967,10 +1019,10 @@ void adjustBrightnessMatrix(){
     }
 
     if (yValue > maxThresholdMargin && lastYValue <= maxThresholdMargin) {
-      if (matrixLevelBrightness == 1){
+      if (matrixLevelBrightness == 1) {
         matrixLevelBrightness = 2;
         matrixBrightness = 6;
-      } else if (matrixLevelBrightness == 2){
+      } else if (matrixLevelBrightness == 2) {
         matrixLevelBrightness = 3;
         matrixBrightness = 10;
       }
@@ -980,7 +1032,6 @@ void adjustBrightnessMatrix(){
     matrixBrightness = map(matrixLevelBrightness, 1, 3, 2, 10);
     Serial.print("matrixLevelBrightness: ");
     Serial.println(matrixLevelBrightness);
-
 
     lcd.setCursor(lcdWidth - 2, 1);
     for (int i = 1; i <= 3; i++) {
@@ -998,10 +1049,10 @@ void adjustBrightnessMatrix(){
     if (buttonState != lastButtonState) {
       lastDebounceTimeButton = millis();
     }
-  
-    if (millis() - lastDebounceTimeButton > debounceDelayButton){
-       if (buttonState == LOW && !lastButtonState) {
-            if (matrixLevelBrightness == 1) {
+
+    if (millis() - lastDebounceTimeButton > debounceDelayButton) {
+      if (buttonState == LOW && !lastButtonState) {
+        if (matrixLevelBrightness == 1) {
           matrixBrightness = 2;
         } else if (matrixLevelBrightness == 2) {
           matrixBrightness = 6;
@@ -1009,11 +1060,11 @@ void adjustBrightnessMatrix(){
           matrixBrightness = 10;
         }
         lc.setIntensity(0, matrixBrightness);
-        EEPROM.update(matrixBrightnessAddr, matrixBrightness); 
+        EEPROM.update(matrixBrightnessAddr, matrixBrightness);
         adjustmentCompleteMatrix = true;
       }
     }
-  
+
     lastButtonState = buttonState;
     lastYValue = yValue;
   }
@@ -1036,11 +1087,10 @@ void centerTextOnLcdMenu(String text, short line, bool leftArrow, bool rightArro
   lcd.print(text);
 
   if (leftArrow) {
-      lcd.setCursor(0, line);  
-      lcd.write(byte(2));
-    }
-  
-  
+    lcd.setCursor(0, line);
+    lcd.write(byte(2));
+  }
+
   if (rightArrow) {
     lcd.setCursor(lcdWidth - 1, line);
     lcd.write(byte(1));
@@ -1053,7 +1103,7 @@ void displayScrollingText(String text, short line) {
   for (short i = 0; i <= l; ++i) {
     lcd.setCursor(spaces, line);
     lcd.print(text.substring(i));
-    delay(500); 
+    delay(500);
     lcd.clear();
   }
 }
@@ -1066,17 +1116,17 @@ void joystickMoveMatrix() {
   }
 
   if (xValue > maxThresholdMargin && joystickMove == false && playerCol > 0 && !walls[playerRow][playerCol - 1]) {
-  movePlayer(playerRow, playerCol, playerRow, playerCol - 1);
+    movePlayer(playerRow, playerCol, playerRow, playerCol - 1);
   }
-  
+
   if (xValue < minThresholdMargin && joystickMove == false && playerCol < matrixSize - 1 && !walls[playerRow][playerCol + 1]) {
     movePlayer(playerRow, playerCol, playerRow, playerCol + 1);
   }
-  
+
   if (yValue < minThresholdMargin && joystickMove == false && playerRow < matrixSize - 1 && !walls[playerRow + 1][playerCol]) {
     movePlayer(playerRow, playerCol, playerRow + 1, playerCol);
   }
-  
+
   if (yValue > maxThresholdMargin && joystickMove == false && playerRow > 0 && !walls[playerRow - 1][playerCol]) {
     movePlayer(playerRow, playerCol, playerRow - 1, playerCol);
   }
@@ -1108,20 +1158,20 @@ void joystickMoveMatrix() {
   // after finishing the game it displays the name and the score and checks if it is a highscore
   // if the score is a new highscore it will show a message
   if (playerRow == matrixSize - 1 && playerCol == matrixSize - 1) {
-    n+=1;
-    if(n == 2){
+    n += 1;
+    if (n == 2) {
       displayCup();
       lcd.clear();
       centerTextOnLcd(String("Congrats, ") + String(playerName), 0);
       centerTextOnLcd(String("Score: ") + String(currentScore), 1);
-      if(soundOnOrOff == true){
-      themeSong();
-      } else{
+      if (soundOnOrOff == true) {
+        themeSong();
+      } else {
         delay(3000);
       }
       gameFinished = true;
       manageHighScores();
-      if (highscoreMess == 1){
+      if (highscoreMess == 1) {
         centerTextOnLcd(F("You have a"), 0);
         centerTextOnLcd(F("new highscore!"), 1);
         delay(2000);
@@ -1129,12 +1179,13 @@ void joystickMoveMatrix() {
       }
       gameInProgress = false;
       n = 0;
-    }
-    else{
+      lives = 3;
+    } else {
+      menuChoosingSound();
       generateRandomMap();
-      resetPlayer(); 
+      resetPlayer();
     }
-    
+
   }
 
   lastJoystickMove = joystickMove;
@@ -1167,11 +1218,11 @@ void bomb() {
   }
 
   if (millis() - lastDebounceTimeButton > debounceDelayButton) {
-    if (swState == LOW && !lastSwState) { 
+    if (swState == LOW && !lastSwState) {
       if (!bombActive) {
         bombStartTime = millis();
         bombActive = true;
-        bombRow = playerRow; 
+        bombRow = playerRow;
         bombCol = playerCol;
         isBombLedOn = true;
       }
@@ -1179,20 +1230,20 @@ void bomb() {
   }
 
   if (bombActive) {
-    if(soundOnOrOff == true){
+    if (soundOnOrOff == true) {
       tone(buzzerPin, 400, 100);
-    } 
+    }
     if (
-        (playerRow == bombRow && playerCol == bombCol) ||
-        (playerRow == bombRow - 1 && playerCol == bombCol) ||
-        (playerRow == bombRow + 1 && playerCol == bombCol) ||
-        (playerRow == bombRow && playerCol == bombCol - 1) ||
-        (playerRow == bombRow && playerCol == bombCol + 1)
-         ) {
-        digitalWrite(ledPin, HIGH);
-      } else{
-        digitalWrite(ledPin, LOW);
-      }
+      (playerRow == bombRow && playerCol == bombCol) ||
+      (playerRow == bombRow - 1 && playerCol == bombCol) ||
+      (playerRow == bombRow + 1 && playerCol == bombCol) ||
+      (playerRow == bombRow && playerCol == bombCol - 1) ||
+      (playerRow == bombRow && playerCol == bombCol + 1)
+    ) {
+      digitalWrite(ledPin, HIGH);
+    } else {
+      digitalWrite(ledPin, LOW);
+    }
     elapsedTime = millis() - bombStartTime;
     if (elapsedTime >= bombDelay) {
       if (bombRow > 0) {
@@ -1222,15 +1273,14 @@ void bomb() {
         (playerRow == bombRow + 1 && playerCol == bombCol) ||
         (playerRow == bombRow && playerCol == bombCol - 1) ||
         (playerRow == bombRow && playerCol == bombCol + 1)
-         ) {
+      ) {
         // restart game if the player has lives left
-        n = 0;
-        lives-=1;
+        lives -= 1;
         generateRandomMap();
         resetPlayer();
         digitalWrite(ledPin, LOW);
         // stops the game if the player has no more lives
-        if(lives == 0){
+        if (lives == 0) {
           lcd.clear();
           displayX();
           centerTextOnLcd(F("Game over!"), 0);
@@ -1258,12 +1308,11 @@ void generateRandomMap() {
   lc.clearDisplay(0);
   int wallPercentage = 0;
 
-  if (n == 0){
+  if (n == 0) {
     wallPercentage = 55;
-  } else{
+  } else {
     wallPercentage = 80;
   }
-  
 
   for (int i = 0; i < matrixSize; ++i) {
     for (int j = 0; j < matrixSize; ++j) {
@@ -1292,34 +1341,33 @@ void generateRandomMap() {
 }
 
 // stops the game without showing any message
-void stopGame(){
+void stopGame() {
   buttonState = digitalRead(buttonPin);
 
   if (buttonState != lastButtonState) {
     lastDebounceTimeButton = millis();
   }
 
-  if (millis() - lastDebounceTimeButton > debounceDelayButton){
+  if (millis() - lastDebounceTimeButton > debounceDelayButton) {
     if (buttonState == LOW && !lastButtonState) {
-        gameInProgress = false;
-        lcd.clear();
-        gameFinished = false;
-        lives = 3;
-      }
+      gameInProgress = false;
+      lcd.clear();
+      gameFinished = false;
+      lives = 3;
+    }
   }
 
   lastButtonState = buttonState;
 }
 
 // sounds for the menu with the check wheter the sound is on or off
-void menuMovingSound(){
-  if(soundOnOrOff == true){
-      tone(buzzerPin, 4186, 100);
-   } 
+void menuMovingSound() {
+  if (soundOnOrOff == true) {
+    tone(buzzerPin, 4186, 100);
+  }
 }
 
-void themeSong(){
-
+void themeSong() {
   for (int thisNote = 0; thisNote < 8; thisNote++) {
     int noteDuration = 1000 / noteDurations[thisNote];
     tone(buzzerPin, melody[thisNote], noteDuration);
@@ -1328,10 +1376,10 @@ void themeSong(){
   }
 }
 
-void menuChoosingSound(){
-  if(soundOnOrOff == true){
-      tone(buzzerPin, 4699, 100);
-   } 
+void menuChoosingSound() {
+  if (soundOnOrOff == true) {
+    tone(buzzerPin, 4699, 100);
+  }
 }
 
 // drawings for the matrix
@@ -1449,4 +1497,4 @@ void displaySettingsLogo() {
       lc.setLed(0, row, col, bitRead(settingsLogo[row], 7 - col));
     }
   }
-}
+} 
