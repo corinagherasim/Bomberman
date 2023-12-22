@@ -2,7 +2,7 @@
 This is the Introduction to Robotics matrix project, taken in the 3rd year at the Faculty of Mathematics and Computer Science, University of Bucharest. It involves making a game on a 8x8 matrix of LEDs and an LCD screen using a joystick.
 I chose Bomberman because i think it is a game that suits the tasks perfectly. Before making it, I played online to understand the game better and to make the functionalities as close as the original.
 
-### Youtube link presenting the project: <a href= "https://youtu.be/mV54f1vsJz8?si=SKThWqmz0ILGHrO_"> Click here </a>
+### Youtube link presenting the project: <a href= "https://youtu.be/amwhZQo8Un8"> Click here </a>
 
 ### Components Used:
 
@@ -101,10 +101,10 @@ There is a player that should go from the top left corner to the bottom right co
 <image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/1d347a59-275b-485b-9df7-d81f897225aa" width="49%" height="500">
 </p>
 
-<li> Highscores
+<li> Leaderboard
 <p float = "left">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/bd04b22b-6a5b-46aa-a57f-0f5cbb17f229" width="49%" height="500">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/b239dd7b-1d43-469c-bb6a-379aa8a15b7b" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/e89f4335-4674-424b-bf9e-bf3a3b7c6456" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/c6930fac-e2cd-4b45-92a1-898d651fb42d" width="49%" height="500">
 </p>
 
 <li> How to play
@@ -125,10 +125,10 @@ There is a player that should go from the top left corner to the bottom right co
 <image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/e821cb5d-b056-45de-9b71-d3916da6e06a" width="49%" height="500">
 </p>
 
-<li> Brightness LCD
+<li> Contrast LCD
 <p float = "left">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/0929cb87-be64-42cd-90cb-9066c4c901da" width="49%" height="500">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/12a26c45-49f9-4571-a8e1-022689335f4b" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/93023944-f24f-4da3-8949-de01203f39a8" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/c0ba7b9a-4fd6-4ef7-aa06-accb9d468c30" width="49%" height="500">
 </p>
 
 <li> Brightness Matrix
@@ -145,6 +145,7 @@ There is a player that should go from the top left corner to the bottom right co
 
 <li> Reset highscores
 <p float = "left">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/a00df866-4b25-4451-b26a-938da5f5da29" width="49%" height="500">
-<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/37590fde-60c6-41aa-b623-b15915ee3f6c" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/c830196b-c114-4096-9937-82a538246558" width="49%" height="500">
+<image src = "https://github.com/corinagherasim/Bomberman/assets/94368761/50d25b50-6e09-48eb-b040-2287227d2a97" width="49%" height="500">
 </p>
+
